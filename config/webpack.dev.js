@@ -1,58 +1,61 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const {version} = require('../package.json');
-const webpack = require('webpack');
-const path = require("path");
+import { createRequire } from "node:module";
+import path from "node:path";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import webpack from "webpack";
 
-module.exports = {
-    mode: 'development',
+const require = createRequire(import.meta.url);
+const { version } = require("../package.json");
 
-    cache: false,
+export default {
+	mode: "development",
 
-    entry: {
-        'dist/icon-picker.min': path.resolve('./src/js/IconPicker.js'),
-        'dist/themes/bootstrap-5.min': path.resolve('./src/scss/themes/icon-picker.bootstrap-5.scss'),
-        'dist/themes/default.min': path.resolve('./src/scss/themes/icon-picker.default.scss'),
-    },
+	cache: false,
 
-    output: {
-        filename: '[name].js',
-        publicPath: '/',
-        library: {
-            type: 'umd',
-            name: 'IconPicker',
-            export: 'default',
-            umdNamedDefine: true
-        }
-    },
+	entry: {
+		"dist/icon-picker.min": path.resolve("./src/js/IconPicker.js"),
+		"dist/themes/bootstrap-5.min": path.resolve(
+			"./src/scss/themes/icon-picker.bootstrap-5.scss",
+		),
+		"dist/themes/default.min": path.resolve(
+			"./src/scss/themes/icon-picker.default.scss",
+		),
+	},
 
-    devServer: {
-        static: '.',
-        hot: false
-    },
+	output: {
+		filename: "[name].js",
+		publicPath: "/",
+		library: {
+			type: "umd",
+			name: "IconPicker",
+			export: "default",
+			umdNamedDefine: true,
+		},
+	},
 
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                use: 'babel-loader'
-            },
-            {
-                test: /\.scss$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    'sass-loader'
-                ]
-            }
-        ]
-    },
+	devServer: {
+		static: ".",
+		hot: false,
+	},
 
-    plugins: [
-        new MiniCssExtractPlugin({
-            filename: '[name].css'
-        }),
-        new webpack.DefinePlugin({
-            VERSION: JSON.stringify(version)
-        })
-    ]
+	module: {
+		rules: [
+			{
+				test: /\.js$/,
+				use: "babel-loader",
+			},
+			{
+				test: /\.scss$/,
+				use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+			},
+		],
+	},
+
+	plugins: [
+		new MiniCssExtractPlugin({
+			filename: "[name].css",
+		}),
+		new webpack.DefinePlugin({
+			VERSION: JSON.stringify(version),
+		}),
+	],
 };
